@@ -36,45 +36,40 @@ public class Main
     // --- GŁÓWNA LOGIKA REZERWACJI ---
 
     private static void zajmijPokoj(Zwierzeta zwierze) {
-        System.out.println("\n--- REZERWACJA POKOJU ---");
-        System.out.println("Dostępne wolne pokoje:");
+        System.out.println("\n--- AUTOMATYCZNE PRZYDZELANIE POKOJU ---");
+        System.out.println("Szukam pokoju dla: " + zwierze.gatunek + " (Wielkość: " + zwierze.wielkosc + ")");
 
-        boolean czySaWolne = false;
-        // 1. Wyświetlanie wolnych pokoi z cenami
+        // Określamy wymagany typ pokoju
+        Typ_pokoju.TypPokoju wymaganyTyp = Typ_pokoju.TypPokoju.lodowy; // Domyślnie lodowy
+        if (zwierze instanceof Ryby) {
+            wymaganyTyp = Typ_pokoju.TypPokoju.wodny; // Ryby muszą mieć wodny
+        }
+        // Można dodać też wodny dla ssaków wodnych czy gadów wodnych jeśli trzeba
+
+        // Konwersja wielkosci zwierzecia na rodzaj pokoju
+        Typ_pokoju.RodzajPokoju wymaganyRodzaj = Typ_pokoju.RodzajPokoju.maly;
+        if (zwierze.wielkosc == Zwierzeta.wielkosc.sredni) wymaganyRodzaj = Typ_pokoju.RodzajPokoju.sredni;
+        if (zwierze.wielkosc == Zwierzeta.wielkosc.duzy) wymaganyRodzaj = Typ_pokoju.RodzajPokoju.duzy;
+        if (zwierze.wielkosc == Zwierzeta.wielkosc.ogromy) wymaganyRodzaj = Typ_pokoju.RodzajPokoju.ogromny;
+
+        Pokoje znalezionyPokoj = null;
+
+        // Szukanie pasującego pokoju
         for (Pokoje p : pokoje) {
-            if (!p.zajety) {
-                int cena = pobierzCeneJakoLiczbe(p.cenaPokoju);
-                System.out.println("Nr: " + p.Nr + " | Typ: " + p.typPokoju +
-                        " | Rodzaj: " + p.rodzajPokoju +
-                        " | Cena za noc: " + cena + " zł");
-                czySaWolne = true;
+            if (!p.zajety && p.typPokoju == wymaganyTyp && p.rodzajPokoju == wymaganyRodzaj) {
+                znalezionyPokoj = p;
+                break; // Znaleziono pierwszy wolny pasujący
             }
         }
 
-        if (!czySaWolne) {
-            System.out.println("PRZEPRASZAMY! Brak wolnych pokoi.");
-            return; // Przerywamy, bo nie ma gdzie spać
-        }
-
-        // 2. Wybór pokoju
-        System.out.print("\nWpisz NUMER pokoju, który chcesz wynająć: ");
-        int wybranyNr = scanner.nextInt();
-        scanner.nextLine();
-
-        // Szukamy pokoju w tablicy (pamiętając, że index to nr-1)
-        if (wybranyNr < 1 || wybranyNr > 80) {
-            System.out.println("Nie ma takiego pokoju!");
+        if (znalezionyPokoj == null) {
+            System.out.println("PRZEPRASZAMY! Brak wolnych pokoi o wymaganych parametrach (" + wymaganyTyp + ", " + wymaganyRodzaj + ").");
             return;
         }
 
-        Pokoje wybranyPokoj = pokoje[wybranyNr - 1];
+        System.out.println("Znaleziono pokój nr: " + znalezionyPokoj.Nr + " (" + znalezionyPokoj.rodzajPokoju + ", " + znalezionyPokoj.typPokoju + "," + znalezionyPokoj.cenaPokoju + ")");
 
-        if (wybranyPokoj.zajety) {
-            System.out.println("Ten pokój jest już zajęty! Spróbuj ponownie.");
-            return;
-        }
-
-        // 3. Pytanie o liczbę nocy
+        // Pytanie o liczbę nocy
         System.out.print("Na ile nocy chcesz wynająć pokój?: ");
         int noce = scanner.nextInt();
         scanner.nextLine();
@@ -84,33 +79,29 @@ public class Main
             return;
         }
 
-        // 4. Obliczanie ceny
-        int cenaZaDobe = pobierzCeneJakoLiczbe(wybranyPokoj.cenaPokoju);
+        // Obliczanie ceny
+        int cenaZaDobe = pobierzCeneJakoLiczbe(znalezionyPokoj.cenaPokoju);
         int kosztCalkowity = cenaZaDobe * noce;
 
         System.out.println("\n--- PODSUMOWANIE ---");
-        System.out.println("Klient: " + zwierze.gatunek);
-        System.out.println("Pokój nr: " + wybranyPokoj.Nr);
-        System.out.println("Długość pobytu: " + noce + " nocy");
         System.out.println("Koszt całkowity: " + kosztCalkowity + " zł");
         System.out.println("Stan portwela klienta: " + zwierze.portfel + " zł");
 
-        // 5. Sprawdzenie portfela i finalizacja
+        // Sprawdzenie portfela i finalizacja
         if (zwierze.portfel >= kosztCalkowity) {
             System.out.println("\nCzy potwierdzasz rezerwację? (1-TAK, 2-NIE)");
             int decyzja = scanner.nextInt();
             scanner.nextLine();
 
             if (decyzja == 1) {
-                // Pobieramy pieniądze
                 zwierze.portfel -= kosztCalkowity;
-                // Zajmujemy pokój
-                wybranyPokoj.zajety = true;
-                wybranyPokoj.gosc = zwierze;
-                // Dodajemy do listy gości
+                znalezionyPokoj.zajety = true;
+                znalezionyPokoj.gosc = zwierze;
                 listaGosci.add(zwierze);
 
-                System.out.println("SUKCES! Pokój zarezerwowany. Zostało w portwelu: " + zwierze.portfel + " zł");
+                System.out.println("SUKCES! Pokój nr " + znalezionyPokoj.Nr + " zarezerwowany.");
+                System.out.println("Pozostałe środki na koncie klienta" + (zwierze.portfel - kosztCalkowity) );
+
             } else {
                 System.out.println("Anulowano rezerwację.");
             }
@@ -127,12 +118,18 @@ public class Main
         ssak.wiek = wiek;
         if (rodzaj == 1) ssak.typSsaka = Ssaki.rodzaj.miesozerca;
         else ssak.typSsaka = Ssaki.rodzaj.roslinozerca;
+
+        // Logika rozmiaru dla ssaka
+        if (waga <= 2) ssak.wielkosc = Zwierzeta.wielkosc.maly;
+        else if (waga <= 10) ssak.wielkosc = Zwierzeta.wielkosc.sredni;
+        else if (waga <= 50) ssak.wielkosc = Zwierzeta.wielkosc.duzy;
+        else ssak.wielkosc = Zwierzeta.wielkosc.ogromy;
+
         ssak.waga = waga;
         ssak.gatunek = gatunek;
         ssak.index = index;
         ssak.portfel = portwel;
 
-        // Przekazujemy gotowe zwierzę do systemu rezerwacji
         zajmijPokoj(ssak);
     }
 
@@ -143,6 +140,14 @@ public class Main
         else if (rodzaj == 2) roślina.typrośliny = rośliny.rodzaj.zimnolubne;
         else if (rodzaj == 3) roślina.typrośliny = rośliny.rodzaj.cieniolubne;
         else roślina.typrośliny = rośliny.rodzaj.swiatlolubne;
+
+        // Logika rozmiaru dla rośliny (waga tu robi za wysokość w cm/m - uproszczenie int)
+        // Zakładam waga jako cm dla uproszczenia intów lub m * 100
+        if (waga <= 20) roślina.wielkosc = Zwierzeta.wielkosc.maly; // do 0.2m (20cm)
+        else if (waga <= 100) roślina.wielkosc = Zwierzeta.wielkosc.sredni; // do 1m
+        else if (waga <= 200) roślina.wielkosc = Zwierzeta.wielkosc.duzy; // do 2m
+        else roślina.wielkosc = Zwierzeta.wielkosc.ogromy;
+
         roślina.waga = waga;
         roślina.gatunek = gatunek;
         roślina.index = index;
@@ -157,6 +162,14 @@ public class Main
         ryba.wiek = wiek;
         if (rodzaj == 1) ryba.typRyby = Ryby.rodzaj.slodko_wodne;
         else ryba.typRyby = Ryby.rodzaj.słonowodne;
+
+        // Logika rozmiaru dla ryby (waga w gramach * 10 lub kg - dostosowane do int)
+        // Zakładam waga jako jednostka umowna zgodna z textem w menu
+        if (waga <= 100) ryba.wielkosc = Zwierzeta.wielkosc.maly; // 0.1kg = 100g
+        else if (waga <= 300) ryba.wielkosc = Zwierzeta.wielkosc.sredni;
+        else if (waga <= 1000) ryba.wielkosc = Zwierzeta.wielkosc.duzy;
+        else ryba.wielkosc = Zwierzeta.wielkosc.ogromy;
+
         ryba.waga = waga;
         ryba.gatunek = gatunek;
         ryba.index = index;
@@ -173,6 +186,13 @@ public class Main
         else if (rodzaj == 2) gad.typGada = Gady.rodzaj.jaszczurka;
         else if (rodzaj == 3) gad.typGada = Gady.rodzaj.zulw;
         else gad.typGada = Gady.rodzaj.krokodyl;
+
+        // Logika rozmiaru dla gada (przyjąłem te same co ssaka bo w tekscie były gwiazdki ***)
+        if (waga <= 2) gad.wielkosc = Zwierzeta.wielkosc.maly;
+        else if (waga <= 10) gad.wielkosc = Zwierzeta.wielkosc.sredni;
+        else if (waga <= 50) gad.wielkosc = Zwierzeta.wielkosc.duzy;
+        else gad.wielkosc = Zwierzeta.wielkosc.ogromy;
+
         gad.waga = waga;
         gad.gatunek = gatunek;
         gad.index = index;
@@ -188,6 +208,13 @@ public class Main
         if (rodzaj == 1) płaz.typpłaza = płazy.rodzaj.ogoniaste;
         else if (rodzaj == 2) płaz.typpłaza = płazy.rodzaj.bezogonowe;
         else płaz.typpłaza = płazy.rodzaj.beznogie;
+
+        // Logika rozmiaru dla płaza
+        if (waga <= 100) płaz.wielkosc = Zwierzeta.wielkosc.maly;
+        else if (waga <= 500) płaz.wielkosc = Zwierzeta.wielkosc.sredni;
+        else if (waga <= 2000) płaz.wielkosc = Zwierzeta.wielkosc.duzy;
+        else płaz.wielkosc = Zwierzeta.wielkosc.ogromy;
+
         płaz.waga = waga;
         płaz.gatunek = gatunek;
         płaz.index = index;
@@ -199,7 +226,6 @@ public class Main
     private static void dodajPtaka(int wiek, int rodzaj, int waga, String gatunek, int index, int portwel)
     {
         ptaki ptak= new ptaki();
-
         ptak.wiek = wiek;
         if (rodzaj == 1) ptak.typPtaka = ptaki.rodzaj.papuga;
         else if (rodzaj == 2) ptak.typPtaka = ptaki.rodzaj.kruk;
@@ -207,6 +233,13 @@ public class Main
         else if (rodzaj == 4) ptak.typPtaka = ptaki.rodzaj.gołąb;
         else if (rodzaj == 5) ptak.typPtaka = ptaki.rodzaj.sokół;
         else ptak.typPtaka = ptaki.rodzaj.kanarek;
+
+        // Logika rozmiaru dla ptaka
+        if (waga <= 100) ptak.wielkosc = Zwierzeta.wielkosc.maly;
+        else if (waga <= 500) ptak.wielkosc = Zwierzeta.wielkosc.sredni;
+        else if (waga <= 2000) ptak.wielkosc = Zwierzeta.wielkosc.duzy;
+        else ptak.wielkosc = Zwierzeta.wielkosc.ogromy;
+
         ptak.waga = waga;
         ptak.gatunek = gatunek;
         ptak.index = index;
@@ -243,7 +276,7 @@ public class Main
             switch (Wybur1)
             {
                 case 1:
-                    System.out.println("Pokoje (Wyświetlam tylko zajęte i pierwsze 5 wolnych)");
+                    System.out.println("Pokoje (Wyświetlam stan pokoi)");
                     int licznikWolnych = 0;
                     for(Pokoje pokoj : pokoje) {
                         if (pokoj.zajety) System.out.println(pokoj);
@@ -285,10 +318,10 @@ public class Main
                         System.out.println("Podaj wiek"); int w = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Jaki Rodzaj (1.Slodkowodna 2.Slonowodna)"); int r = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Podaj wage");
-                        System.out.println("od 0kg do 0,1kg jest maly");
-                        System.out.println("od 0,11kg do 0,3kg jest sredni");
-                        System.out.println("od 0,31kg do 1kg jest duzy");
-                        System.out.println("od 1kg+ jest ogromny");
+                        System.out.println("od 0kg do 100g jest maly");
+                        System.out.println("od 101g do 300g jest sredni");
+                        System.out.println("od 301g do 1000g jest duzy");
+                        System.out.println("od 1000g+ jest ogromny");
                         int wa = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Podaj Gatunek"); String g = scanner.nextLine();
                         System.out.println("Podaj BUDŻET (portwel)"); int p = scanner.nextInt();
@@ -311,10 +344,10 @@ public class Main
                         System.out.println("Podaj wiek"); int w = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Jaki Rodzaj (1.papuga 2.kruk 3.gołąb 4. sokół 5.sowa 6.kanarek)"); int r = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Podaj wage");
-                        System.out.println("od 0kg do 0,1kg jest maly");
-                        System.out.println("od 0,11kg do 0,5kg jest sredni");
-                        System.out.println("od 0,51kg do 2kg jest duzy");
-                        System.out.println("od 2kg+ jest ogromny");
+                        System.out.println("od 0g do 100g jest maly");
+                        System.out.println("od 101g do 500g jest sredni");
+                        System.out.println("od 501g do 2000g jest duzy");
+                        System.out.println("od 2001g+ jest ogromny");
                         int wa = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Podaj Gatunek"); String g = scanner.nextLine();
                         System.out.println("Podaj BUDŻET (portwel)"); int p = scanner.nextInt();
@@ -324,10 +357,10 @@ public class Main
                         System.out.println("Podaj wiek"); int w = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Jaki Rodzaj (1-3)"); int r = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Podaj wage");
-                        System.out.println("od 0kg do 0,1kg jest maly");
-                        System.out.println("od 0,11kg do 0,5kg jest sredni");
-                        System.out.println("od 0,51kg do 2kg jest duzy");
-                        System.out.println("od 2kg+ jest ogromny");
+                        System.out.println("od 0g do 100g jest maly");
+                        System.out.println("od 101g do 500g jest sredni");
+                        System.out.println("od 501g do 2000g jest duzy");
+                        System.out.println("od 2001g+ jest ogromny");
                         int wa = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Podaj Gatunek"); String g = scanner.nextLine();
                         System.out.println("Podaj BUDŻET (portwel)"); int p = scanner.nextInt();
@@ -336,11 +369,12 @@ public class Main
                     else if (Wybor2 == 6) { // Roślina
                         System.out.println("Podaj Rodzaj (1.cieniolubne 2. światłolubne 3. ciepłolubne 4. zimnolubne)"); int r = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Podaj wysokosc");
-                        System.out.println("od 0m do 0,2m jest maly");
-                        System.out.println("od 0,21m do 1m jest sredni");
-                        System.out.println("od 1,01m do 2kg jest duzy");
-                        System.out.println("od 2m+ jest ogromny");
+                        System.out.println("od 0m do 20cm jest maly");
+                        System.out.println("od 21cm do 100cm jest sredni");
+                        System.out.println("od 101cm do 200cm jest duzy");
+                        System.out.println("od 201cm jest ogromny");
                         int wa = scanner.nextInt(); scanner.nextLine();
+
                         System.out.println("Podaj Gatunek"); String g = scanner.nextLine();
                         System.out.println("Podaj BUDŻET (portwel)"); int p = scanner.nextInt();
                         dodajRoślinę(r, wa, g, index, p);
@@ -353,7 +387,7 @@ public class Main
                 case 3:
                     System.out.println("--- LISTA GOŚCI ---");
                     for(Zwierzeta z : listaGosci) {
-                        System.out.println(z.gatunek + " (" + z.index + ") - Portwel: " + z.portfel);
+                        System.out.println(z.wiek + z.waga + z.gatunek + " (" + z.index + ") - Portwel: " + z.portfel);
                     }
                     break;
 

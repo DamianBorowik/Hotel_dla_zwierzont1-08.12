@@ -9,7 +9,7 @@ public abstract class Zwierzeta {
     public enum Wielkosc {
         maly, sredni, duzy, ogromy
     }
-    protected Wielkosc wielkosc;
+    protected static Wielkosc wielkosc;
 
     // Metoda ustawiająca wielkość automatycznie na podstawie wagi
     public void ustalWielkoscNaPodstawieWagi() {
