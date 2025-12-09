@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Main
 {
-
+ // 1. Scanner jest teraz tutaj, żeby był widoczny we wszystkich metodach
     static Scanner scanner = new Scanner(System.in);
 
     // Lista przechowująca wszystkie zarejestrowane zwierzęta
@@ -22,7 +22,7 @@ public class Main
         System.out.println("5. Zamknij");
     }
 
-    //METODY dodatkowe
+   // nie przechdzily mi enumy jak byly samymi liczbami to dodalem dobaxzl i returny i smiga legancko
 
     private static int pobierzCeneJakoLiczbe(Typ_pokoju.CenaPokoju cenaEnum) {
         switch (cenaEnum) {
@@ -152,7 +152,8 @@ public class Main
         }
     }
 
-
+//dla wiekszych bydlakow jednostka bedzie w kg dla mniejszych bydlakow bedzie w gramach a dla roslin bedzie w cm.
+    //cos sie sra jak sie chce dac 0,2kg wiec lepiej zeby byl 200g
     private static void dodajSsaka(int wiek, int rodzaj, int waga, String gatunek, int index, int portwel)
     {
         Ssaki ssak = new Ssaki();
@@ -182,7 +183,7 @@ public class Main
         else if (rodzaj == 3) roślina.typrośliny = rośliny.rodzaj.cieniolubne;
         else roślina.typrośliny = rośliny.rodzaj.swiatlolubne;
 
-        // Tutaj waga działa jako wysokość
+// roslinka to w wysokosci musi byc a dziala na zasadzie wagi to zostaje jako waga
         if (waga <= 20) roślina.wielkosc = Zwierzeta.Wielkosc.maly;
         else if (waga <= 100) roślina.wielkosc = Zwierzeta.Wielkosc.sredni;
         else if (waga <= 200) roślina.wielkosc = Zwierzeta.Wielkosc.duzy;
