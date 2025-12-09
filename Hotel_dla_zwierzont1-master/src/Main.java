@@ -11,7 +11,7 @@ public class Main
 
     private static void menu()
     {
-        System.out.println("\n=== WITAMY W HOTELU DLA ZWIERZOT ===");
+        System.out.println(" WITAMY W HOTELU DLA ZWIERZOT ");
         System.out.println("1. Sprawdzenie pokoi");
         System.out.println("2. Dodanie gościa (Rejestracja)");
         System.out.println("3. Lista gości");
@@ -33,20 +33,17 @@ public class Main
         }
     }
 
-    // --- GŁÓWNA LOGIKA REZERWACJI ---
 
     private static void zajmijPokoj(Zwierzeta zwierze) {
-        System.out.println("\n--- AUTOMATYCZNE PRZYDZELANIE POKOJU ---");
+        System.out.println(" AUTOMATYCZNE PRZYDZELANIE POKOJU ");
         System.out.println("Szukam pokoju dla: " + zwierze.gatunek + " (Wielkość: " + zwierze.wielkosc + ")");
 
-        // Określamy wymagany typ pokoju
-        Typ_pokoju.TypPokoju wymaganyTyp = Typ_pokoju.TypPokoju.lodowy; // Domyślnie lodowy
-        if (zwierze instanceof Ryby) {
-            wymaganyTyp = Typ_pokoju.TypPokoju.wodny; // Ryby muszą mieć wodny
-        }
-        // Można dodać też wodny dla ssaków wodnych czy gadów wodnych jeśli trzeba
 
-        // Konwersja wielkosci zwierzecia na rodzaj pokoju
+        Typ_pokoju.TypPokoju wymaganyTyp = Typ_pokoju.TypPokoju.lodowy;
+        if (zwierze instanceof Ryby) {
+            wymaganyTyp = Typ_pokoju.TypPokoju.wodny;
+        }
+
         Typ_pokoju.RodzajPokoju wymaganyRodzaj = Typ_pokoju.RodzajPokoju.maly;
         if (zwierze.wielkosc == Zwierzeta.wielkosc.sredni) wymaganyRodzaj = Typ_pokoju.RodzajPokoju.sredni;
         if (zwierze.wielkosc == Zwierzeta.wielkosc.duzy) wymaganyRodzaj = Typ_pokoju.RodzajPokoju.duzy;
@@ -54,11 +51,11 @@ public class Main
 
         Pokoje znalezionyPokoj = null;
 
-        // Szukanie pasującego pokoju
+
         for (Pokoje p : pokoje) {
             if (!p.zajety && p.typPokoju == wymaganyTyp && p.rodzajPokoju == wymaganyRodzaj) {
                 znalezionyPokoj = p;
-                break; // Znaleziono pierwszy wolny pasujący
+                break;
             }
         }
 
@@ -69,7 +66,7 @@ public class Main
 
         System.out.println("Znaleziono pokój nr: " + znalezionyPokoj.Nr + " (" + znalezionyPokoj.rodzajPokoju + ", " + znalezionyPokoj.typPokoju + "," + znalezionyPokoj.cenaPokoju + ")");
 
-        // Pytanie o liczbę nocy
+
         System.out.print("Na ile nocy chcesz wynająć pokój?: ");
         int noce = scanner.nextInt();
         scanner.nextLine();
@@ -79,15 +76,14 @@ public class Main
             return;
         }
 
-        // Obliczanie ceny
         int cenaZaDobe = pobierzCeneJakoLiczbe(znalezionyPokoj.cenaPokoju);
         int kosztCalkowity = cenaZaDobe * noce;
 
-        System.out.println("\n--- PODSUMOWANIE ---");
+        System.out.println(" PODSUMOWANIE ");
         System.out.println("Koszt całkowity: " + kosztCalkowity + " zł");
         System.out.println("Stan portwela klienta: " + zwierze.portfel + " zł");
 
-        // Sprawdzenie portfela i finalizacja
+
         if (zwierze.portfel >= kosztCalkowity) {
             System.out.println("\nCzy potwierdzasz rezerwację? (1-TAK, 2-NIE)");
             int decyzja = scanner.nextInt();
@@ -113,15 +109,14 @@ public class Main
     {
         System.out.println("Podaj numer pokoju do wymeldowania:");
         int nr = scanner.nextInt();
-        scanner.nextLine(); // czyszczenie bufora
+        scanner.nextLine();
 
-        // Sprawdzenie czy pokoj istnieje
         if (nr < 1 || nr > 80) {
             System.out.println("Nie ma takiego pokoju!");
             return;
         }
 
-        Pokoje pokoj = pokoje[nr - 1]; // indeks tablicy to nr - 1
+        Pokoje pokoj = pokoje[nr - 1];
 
         if (pokoj.zajety) {
             System.out.println("Wymeldowano gościa: " + pokoj.gosc.gatunek);
