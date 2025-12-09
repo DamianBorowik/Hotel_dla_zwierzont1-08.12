@@ -1,25 +1,20 @@
 public class Pokoje extends Typ_pokoju
 {
-
-// cena za typ pokoju
-
-//Dać konkretną ilość pokoi i przypisać im typy (tabela poki)
-
-
     int Nr;
+    // Dodałem te dwa pola, żeby pokój działał
+    public boolean zajety = false;
+    public Zwierzeta gosc = null;
 
-
-    public Pokoje(int Nr,TypPokoju typPokoju, RodzajPokoju rodzajPokoju)
+    public Pokoje(int Nr,TypPokoju typPokoju, RodzajPokoju rodzajPokoju, CenaPokoju  cenaPokoju)
     {
-        super(typPokoju, rodzajPokoju);
+        super(typPokoju, rodzajPokoju, cenaPokoju);
         this.Nr = Nr;
-
     }
-
 
     @Override
     public String toString() {
-        return  Nr + " " + rodzajPokoju + " " + typPokoju;
+        // Zmieniłem wyświetlanie, żeby pokazywało czy zajęte
+        String status = zajety ? (" [ZAJĘTY przez: " + gosc.gatunek + "]") : " [WOLNY]";
+        return  "Pokój " + Nr + " " + rodzajPokoju + " " + typPokoju + " " + cenaPokoju + status;
     }
-
 }

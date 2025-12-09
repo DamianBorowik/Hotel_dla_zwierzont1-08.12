@@ -1,6 +1,8 @@
 public class Gady extends Zwierzeta
 {
 
+    public rodzaj typGada;
+
     enum rodzaj
     {
         woz, jaszczurka, zulw, krokodyl

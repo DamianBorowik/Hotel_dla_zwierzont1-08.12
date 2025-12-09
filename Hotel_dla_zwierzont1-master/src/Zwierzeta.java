@@ -1,29 +1,26 @@
-public abstract class Zwierzeta
-{
-
+public abstract class Zwierzeta {
     int wiek;
-    int waga; // Moim zdaniem trzeba zrobić wielkość względem wagi (wtedy enum chyba nie potrzebny bo w innym miejscu)
+    double waga; // Waga może być ułamkowa (np. 0.5 kg)
     String gatunek;
     int index;
+    int portfel; // Poprawiona nazwa
 
-    public enum wielkosc
-    {
+    // Enum wielkości
+    public enum Wielkosc {
         maly, sredni, duzy, ogromy
     }
+    protected Wielkosc wielkosc;
 
-    protected wielkosc wielkosc;
+    // Metoda ustawiająca wielkość automatycznie na podstawie wagi
+    public void ustalWielkoscNaPodstawieWagi() {
+        if (waga <= 2) wielkosc = Wielkosc.maly;
+        else if (waga <= 10) wielkosc = Wielkosc.sredni;
+        else if (waga <= 50) wielkosc = Wielkosc.duzy;
+        else wielkosc = Wielkosc.ogromy;
+    }
 
-
-
-
-    int porcwel;
-    // Portwel osoby (można nie trzeba)?
-
-
-
-    //Comparable lub Comparator dla wagi
-
-    // Dodać nowe klasy zwierząt
-
-
+    @Override
+    public String toString() {
+        return "Gatunek: " + gatunek + ", Wiek: " + wiek + ", Waga: " + waga + "kg (" + wielkosc + ")";
+    }
 }
