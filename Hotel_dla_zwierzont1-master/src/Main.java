@@ -290,7 +290,7 @@ public class Main
             else if(i<51) pokoje[i-1] = new Pokoje(i,Typ_pokoju.TypPokoju.lodowy, Typ_pokoju.RodzajPokoju.duzy, Typ_pokoju.CenaPokoju.doba1000zl);
             else if(i<61) pokoje[i-1] = new Pokoje(i,Typ_pokoju.TypPokoju.wodny, Typ_pokoju.RodzajPokoju.duzy, Typ_pokoju.CenaPokoju.doba700zl);
             else if(i<71) pokoje[i-1] = new Pokoje(i,Typ_pokoju.TypPokoju.lodowy, Typ_pokoju.RodzajPokoju.ogromny, Typ_pokoju.CenaPokoju.doba1500zl);
-            else pokoje[i-1] = new Pokoje(i,Typ_pokoju.TypPokoju.wodny, Typ_pokoju.RodzajPokoju.ogromny, Typ_pokoju.CenaPokoju.doba1000zl);
+                     else pokoje[i-1] = new Pokoje(i,Typ_pokoju.TypPokoju.wodny, Typ_pokoju.RodzajPokoju.ogromny, Typ_pokoju.CenaPokoju.doba1000zl);
         }
 
         boolean Start = true;
@@ -416,7 +416,25 @@ public class Main
                 case 3:
                     System.out.println("--- LISTA GOŚCI ---");
                     for(Zwierzeta z : listaGosci) {
-                        System.out.println(aktualnypokoj"wiek" + " " + z.wiek + " " + "waga"+ " " + z.waga + " "+ "gatunek" + " " + z.gatunek + " " + "index" + " (" + z.index + ") - Pozostałe środki: " + z.portfel);
+                        // Szukamy numeru pokoju dla tego gościa
+                        int numerPokojuGoscia = -1; // Domyślnie -1 (gdyby nie znaleziono)
+                        for(Pokoje p : pokoje) {
+                            if(p.zajety && p.gosc == z) { // Sprawdzamy czy to ten gość
+                                numerPokojuGoscia = p.Nr;
+                                break;
+                            }
+                        }
+
+                        String infoPokoj = (numerPokojuGoscia != -1) ? "Pokój nr: " + numerPokojuGoscia : "Brak pokoju";
+
+                        System.out.println(
+                                        infoPokoj +
+                                        "Wiek: " + z.wiek + ", " +
+                                        "Waga: " + z.waga + ", " +
+                                        "Gatunek: " + z.gatunek + ", " +
+                                        "Index: (" + z.index + "), " +
+                                        "Zapas finsnsowy: " + z.portfel + ", "
+                        );
                     }
                     break;
                 case 4:
