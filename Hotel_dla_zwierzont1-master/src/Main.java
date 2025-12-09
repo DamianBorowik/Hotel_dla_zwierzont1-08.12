@@ -100,13 +100,42 @@ public class Main
                 listaGosci.add(zwierze);
 
                 System.out.println("SUKCES! Pokój nr " + znalezionyPokoj.Nr + " zarezerwowany.");
-                System.out.println("Pozostałe środki na koncie klienta" + (zwierze.portfel - kosztCalkowity) );
+                System.out.println("Pozostałe środki na koncie klienta" + " " + zwierze.portfel );
 
             } else {
                 System.out.println("Anulowano rezerwację.");
             }
         } else {
             System.out.println("BŁĄD: Klienta nie stać na ten pokój! Brakuje: " + (kosztCalkowity - zwierze.portfel) + " zł");
+        }
+    }
+    private static void wymeldujGoscia()
+    {
+        System.out.println("Podaj numer pokoju do wymeldowania:");
+        int nr = scanner.nextInt();
+        scanner.nextLine(); // czyszczenie bufora
+
+        // Sprawdzenie czy pokoj istnieje
+        if (nr < 1 || nr > 80) {
+            System.out.println("Nie ma takiego pokoju!");
+            return;
+        }
+
+        Pokoje pokoj = pokoje[nr - 1]; // indeks tablicy to nr - 1
+
+        if (pokoj.zajety) {
+            System.out.println("Wymeldowano gościa: " + pokoj.gosc.gatunek);
+
+            // Usunięcie z listy gosci
+            listaGosci.remove(pokoj.gosc);
+
+            // Zwolnienie pokoju
+            pokoj.zajety = false;
+            pokoj.gosc = null;
+
+            System.out.println("Pokój nr " + nr + " jest teraz wolny.");
+        } else {
+            System.out.println("Ten pokój nie jest zajęty!");
         }
     }
 
@@ -383,12 +412,15 @@ public class Main
                         System.out.println("Nieprawidłowy wybór");
                     }
                     break;
-
+                        //to jest do naprawy i trzeba zrobic tak aby program wyswietlal numer pokoju w ktorym znajduje sie gosc
                 case 3:
                     System.out.println("--- LISTA GOŚCI ---");
                     for(Zwierzeta z : listaGosci) {
-                        System.out.println(z.wiek + z.waga + z.gatunek + " (" + z.index + ") - Portwel: " + z.portfel);
+                        System.out.println(aktualnypokoj"wiek" + " " + z.wiek + " " + "waga"+ " " + z.waga + " "+ "gatunek" + " " + z.gatunek + " " + "index" + " (" + z.index + ") - Pozostałe środki: " + z.portfel);
                     }
+                    break;
+                case 4:
+                    wymeldujGoscia();
                     break;
 
                 case 5:
