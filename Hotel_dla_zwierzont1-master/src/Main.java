@@ -15,6 +15,7 @@ public class Main
         System.out.println("1. Sprawdzenie pokoi");
         System.out.println("2. Dodanie gościa (Rejestracja)");
         System.out.println("3. Lista gości");
+        System.out.println("4. Wymeldowanie gościa");
         System.out.println("5. Zamknij");
     }
 
@@ -246,7 +247,7 @@ public class Main
                     int licznikWolnych = 0;
                     for(Pokoje pokoj : pokoje) {
                         if (pokoj.zajety) System.out.println(pokoj);
-                        else if (licznikWolnych < 5) {
+                        else if (licznikWolnych < 80) {
                             System.out.println(pokoj);
                             licznikWolnych++;
                         }
@@ -270,15 +271,25 @@ public class Main
                     if (Wybor2 == 1) { // Ssak
                         System.out.println("Podaj wiek"); int w = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Jaki Rodzaj (1.Miesozerca 2.Roslinozerca)"); int r = scanner.nextInt(); scanner.nextLine();
-                        System.out.println("Podaj wage"); int wa = scanner.nextInt(); scanner.nextLine();
+                        System.out.println("Podaj wage");
+                        System.out.println("od 0kg do 2kg jest maly");
+                        System.out.println("od 2,01kg do 10kg jest sredni");
+                        System.out.println("od 10kg do 50kg jest duzy");
+                        System.out.println("od 50kg+ jest ogromny");
+                        int wa = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Podaj Gatunek"); String g = scanner.nextLine();
                         System.out.println("Podaj BUDŻET (portwel)"); int p = scanner.nextInt();
                         dodajSsaka(w, r, wa, g, index, p);
                     }
                     else if (Wybor2 == 2) { // Ryba
                         System.out.println("Podaj wiek"); int w = scanner.nextInt(); scanner.nextLine();
-                        System.out.println("Jaki Rodzaj (1.Slodka 2.Slona)"); int r = scanner.nextInt(); scanner.nextLine();
-                        System.out.println("Podaj wage"); int wa = scanner.nextInt(); scanner.nextLine();
+                        System.out.println("Jaki Rodzaj (1.Slodkowodna 2.Slonowodna)"); int r = scanner.nextInt(); scanner.nextLine();
+                        System.out.println("Podaj wage");
+                        System.out.println("od 0kg do 0,1kg jest maly");
+                        System.out.println("od 0,11kg do 0,3kg jest sredni");
+                        System.out.println("od 0,31kg do 1kg jest duzy");
+                        System.out.println("od 1kg+ jest ogromny");
+                        int wa = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Podaj Gatunek"); String g = scanner.nextLine();
                         System.out.println("Podaj BUDŻET (portwel)"); int p = scanner.nextInt();
                         dodajRybe(w, r, wa, g, index, p);
@@ -286,15 +297,25 @@ public class Main
                     else if (Wybor2 == 3) { // Gad
                         System.out.println("Podaj wiek"); int w = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Jaki Rodzaj (1.Woz 2.Jaszczurka 3.Zulw 4.Krokodyl)"); int r = scanner.nextInt(); scanner.nextLine();
-                        System.out.println("Podaj wage"); int wa = scanner.nextInt(); scanner.nextLine();
+                        System.out.println("Podaj wage");
+                        System.out.println("od 0kg do 2kg jest maly");
+                        System.out.println("od 2,01kg do 10kg jest sredni");
+                        System.out.println("od 10kg do 50kg jest duzy");
+                        System.out.println("od 50kg+ jest ogromny");
+                        int wa = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Podaj Gatunek"); String g = scanner.nextLine();
                         System.out.println("Podaj BUDŻET (portwel)"); int p = scanner.nextInt();
                         dodajGada(w, r, wa, g, index, p);
                     }
                     else if (Wybor2 == 4) { // Ptak
                         System.out.println("Podaj wiek"); int w = scanner.nextInt(); scanner.nextLine();
-                        System.out.println("Jaki Rodzaj (1-6)"); int r = scanner.nextInt(); scanner.nextLine();
-                        System.out.println("Podaj wage"); int wa = scanner.nextInt(); scanner.nextLine();
+                        System.out.println("Jaki Rodzaj (1.papuga 2.kruk 3.gołąb 4. sokół 5.sowa 6.kanarek)"); int r = scanner.nextInt(); scanner.nextLine();
+                        System.out.println("Podaj wage");
+                        System.out.println("od 0kg do 0,1kg jest maly");
+                        System.out.println("od 0,11kg do 0,5kg jest sredni");
+                        System.out.println("od 0,51kg do 2kg jest duzy");
+                        System.out.println("od 2kg+ jest ogromny");
+                        int wa = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Podaj Gatunek"); String g = scanner.nextLine();
                         System.out.println("Podaj BUDŻET (portwel)"); int p = scanner.nextInt();
                         dodajPtaka(w, r, wa, g, index, p);
@@ -302,14 +323,24 @@ public class Main
                     else if (Wybor2 == 5) { // Płaz
                         System.out.println("Podaj wiek"); int w = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Jaki Rodzaj (1-3)"); int r = scanner.nextInt(); scanner.nextLine();
-                        System.out.println("Podaj wage"); int wa = scanner.nextInt(); scanner.nextLine();
+                        System.out.println("Podaj wage");
+                        System.out.println("od 0kg do 0,1kg jest maly");
+                        System.out.println("od 0,11kg do 0,5kg jest sredni");
+                        System.out.println("od 0,51kg do 2kg jest duzy");
+                        System.out.println("od 2kg+ jest ogromny");
+                        int wa = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Podaj Gatunek"); String g = scanner.nextLine();
                         System.out.println("Podaj BUDŻET (portwel)"); int p = scanner.nextInt();
                         dodajPłaza(w, r, wa, g, index, p);
                     }
                     else if (Wybor2 == 6) { // Roślina
-                        System.out.println("Jaki Rodzaj (1-4)"); int r = scanner.nextInt(); scanner.nextLine();
-                        System.out.println("Podaj wage/wysokosc"); int wa = scanner.nextInt(); scanner.nextLine();
+                        System.out.println("Podaj Rodzaj (1.cieniolubne 2. światłolubne 3. ciepłolubne 4. zimnolubne)"); int r = scanner.nextInt(); scanner.nextLine();
+                        System.out.println("Podaj wysokosc");
+                        System.out.println("od 0m do 0,2m jest maly");
+                        System.out.println("od 0,21m do 1m jest sredni");
+                        System.out.println("od 1,01m do 2kg jest duzy");
+                        System.out.println("od 2m+ jest ogromny");
+                        int wa = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Podaj Gatunek"); String g = scanner.nextLine();
                         System.out.println("Podaj BUDŻET (portwel)"); int p = scanner.nextInt();
                         dodajRoślinę(r, wa, g, index, p);
