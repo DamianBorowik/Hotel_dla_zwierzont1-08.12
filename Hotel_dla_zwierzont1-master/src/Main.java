@@ -14,7 +14,7 @@ public class Main
 
     private static void menu()
     {
-        System.out.println(" WITAMY W HOTELU DLA ZWIERZOT ");
+        System.out.println(" WITAMY W HOTELU DLA ZWIERZONT ");
         System.out.println("1. Sprawdzenie pokoi");
         System.out.println("2. Dodanie gościa (Rejestracja)");
         System.out.println("3. Lista gości");
@@ -36,7 +36,7 @@ public class Main
     }
 
 
-    // Ta metoda szuka pokoju, sprawdza kasę i melduje.
+    //szuka pokoju sprawdza kasę i melduje.
     private static void zajmijPokoj(Zwierzeta zwierze) {
         System.out.println(" AUTOMATYCZNE PRZYDZELANIE POKOJU ");
         System.out.println("Szukam pokoju dla: " + zwierze.gatunek + " (Wielkość: " + zwierze.wielkosc + ")");
@@ -92,6 +92,13 @@ public class Main
         if (zwierze.portfel >= kosztCalkowity) {
             System.out.println("\nCzy potwierdzasz rezerwację? (1-TAK, 2-NIE)");
             int decyzja = scanner.nextInt();
+            while(decyzja != 1 && decyzja != 2)
+            {
+                System.out.println("Podaj 1 lub 2");
+                decyzja = scanner.nextInt();
+
+                scanner.nextLine();
+            }
             scanner.nextLine();
 
             if (decyzja == 1) {
@@ -333,6 +340,13 @@ public class Main
                     if (Wybor2 == 1) { // Ssak
                         System.out.println("Podaj wiek"); int w = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Jaki Rodzaj (1.Miesozerca 2.Roslinozerca)"); int r = scanner.nextInt(); scanner.nextLine();
+                        while(r!= 1 && r!= 2)
+                        {
+                            System.out.println("TYLKO 1 lub 2");
+                            r= scanner.nextInt();
+
+                            scanner.nextLine();
+                        }
                         System.out.println("Podaj wage");
                         System.out.println("od 0kg do 2kg jest maly");
                         System.out.println("od 2,01kg do 10kg jest sredni");
@@ -347,6 +361,13 @@ public class Main
                         //pobieranie danych dla ryby
                         System.out.println("Podaj wiek"); int w = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Jaki Rodzaj (1.Slodkowodna 2.Slonowodna)"); int r = scanner.nextInt(); scanner.nextLine();
+                        while(r!= 1 && r!= 2)
+                        {
+                            System.out.println("TYLKO 1 lub 2");
+                            r = scanner.nextInt();
+
+                            scanner.nextLine();
+                        }
                         System.out.println("Podaj wage");
                         System.out.println("od 0kg do 100g jest maly");
                         System.out.println("od 101g do 300g jest sredni");
@@ -360,6 +381,13 @@ public class Main
                     else if (Wybor2 == 3) { // Gad
                         System.out.println("Podaj wiek"); int w = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Jaki Rodzaj (1.Woz 2.Jaszczurka 3.Zulw 4.Krokodyl)"); int r = scanner.nextInt(); scanner.nextLine();
+                        while(r!= 1 && r!= 2&& r!= 3&& r!= 4)
+                        {
+                            System.out.println("TYLKO od 1 do 4");
+                            r = scanner.nextInt();
+
+                            scanner.nextLine();
+                        }
                         System.out.println("Podaj wage");
                         int wa = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Podaj Gatunek"); String g = scanner.nextLine();
@@ -369,6 +397,13 @@ public class Main
                     else if (Wybor2 == 4) { // Ptak
                         System.out.println("Podaj wiek"); int w = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Jaki Rodzaj (1.papuga 2.kruk 3.gołąb 4. sokół 5.sowa 6.kanarek)"); int r = scanner.nextInt(); scanner.nextLine();
+                        while(r!= 1 && r != 2&& r!= 3&& r!= 4&& r!= 5&& r!= 6)
+                        {
+                            System.out.println("TYLKO od 1 do 6");
+                            r = scanner.nextInt();
+
+                            scanner.nextLine();
+                        }
                         System.out.println("Podaj wage");
                         int wa = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Podaj Gatunek"); String g = scanner.nextLine();
@@ -377,7 +412,14 @@ public class Main
                     }
                     else if (Wybor2 == 5) { // Płaz
                         System.out.println("Podaj wiek"); int w = scanner.nextInt(); scanner.nextLine();
-                        System.out.println("Jaki Rodzaj (1-3)"); int r = scanner.nextInt(); scanner.nextLine();
+                        System.out.println("Jaki Rodzaj (1.Bezogonowe 2.Ogoniaste 3.Beznogie)"); int r = scanner.nextInt(); scanner.nextLine();
+                        while(r != 1 && r != 2&& r!= 3)
+                        {
+                            System.out.println("TYLKO 1 lub 2 lub 3");
+                            r = scanner.nextInt();
+
+                            scanner.nextLine();
+                        }
                         System.out.println("Podaj wage");
                         int wa = scanner.nextInt(); scanner.nextLine();
                         System.out.println("Podaj Gatunek"); String g = scanner.nextLine();
@@ -386,6 +428,13 @@ public class Main
                     }
                     else if (Wybor2 == 6) { // Roślina
                         System.out.println("Podaj Rodzaj (1.cieniolubne 2. światłolubne 3. ciepłolubne 4. zimnolubne)"); int r = scanner.nextInt(); scanner.nextLine();
+                        while(r != 1 && r != 2&& r!= 3&& r!= 4)
+                        {
+                            System.out.println("TYLKO od 1 do 4");
+                            r = scanner.nextInt();
+
+                            scanner.nextLine();
+                        }
                         System.out.println("Podaj wysokosc");
                         int wa = scanner.nextInt(); scanner.nextLine();
 
